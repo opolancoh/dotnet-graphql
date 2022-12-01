@@ -3,6 +3,7 @@ using DotNetGraphQL.Web.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.ConfigurePersistenceServices();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureGraphQl();
 
