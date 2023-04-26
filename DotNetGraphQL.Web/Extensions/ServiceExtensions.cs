@@ -13,18 +13,20 @@ public static class ServiceExtensions
         services.AddScoped<IBookService, BookService>();
     }
 
-    public static void ConfigureSqlContext(this IServiceCollection services,
-        IConfiguration configuration) =>
-        services.AddDbContext<ApplicationDbContext>(opts =>
-            opts.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
+    public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
+    {
+        services
+            .AddDbContext<ApplicationDbContext>(options => { options.UseInMemoryDatabase("GraphQLDb"); }); 
+    }
+
 
     public static void ConfigureGraphQl(this IServiceCollection services)
     {
         services
             .AddGraphQLServer()
-            .AddQueryType<BookQuery>()
             .AddProjections()
             .AddFiltering()
-            .AddSorting();
+            .AddSorting()
+            .AddQueryType<BookQuery>();
     }
 }

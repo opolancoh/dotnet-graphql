@@ -9,8 +9,10 @@ public class BookQuery
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Book> GetBooks([Service] IBookService service) => service.GetAll();
+    public IQueryable<Book?> GetBook([Service] IBookService service, Guid id) => service.GetById(id);
 
     [UseProjection]
-    public IQueryable<Book?> GetBook([Service] IBookService service, Guid id) => service.GetById(id);
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Book> GetBooks([Service] IBookService service) => service.GetAll();
 }
