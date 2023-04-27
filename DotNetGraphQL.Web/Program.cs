@@ -20,7 +20,7 @@ if (app.Environment.IsDevelopment())
 {
     // app.UseSwagger();
     // app.UseSwaggerUI();
-    DataHelper.Seed(app);
+    // DataHelper.Seed(app);
 }
 
 app.UseHttpsRedirection();
