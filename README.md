@@ -48,9 +48,9 @@ To add initial data just uncomment this line in Program.cs:
 
 ### Queries
 
-#### Example #1
+#### Example #1 (Get by ID)
 
-Query
+Operations
 ```js
 query {
     book(id: "72d95bfd-1dac-4bc2-adc1-f28fd43777fd") {
@@ -66,7 +66,6 @@ query {
 }
 
 ```
-
 Response
 ```json
 {
@@ -98,7 +97,6 @@ Response
   }
 }
 ```
-
 SQL generated code
 ``` sql
 SELECT b."Id", b."Title", b."PublishedOn", r."Id", r."Comment", r."Rating"
@@ -108,9 +106,9 @@ WHERE b."Id" = @__id_0
 ORDER BY b."Id"
 ```
 
-#### Example #2
+#### Example #2 (Get by ID)
 
-Query
+Operations
 ```js
 query {
     book(id: "72d95bfd-1dac-4bc2-adc1-f28fd43777fd") {
@@ -123,7 +121,6 @@ query {
 }
 
 ```
-
 Response
 ```json
 {
@@ -150,7 +147,6 @@ Response
   }
 }
 ```
-
 SQL generated code
 ``` sql
 SELECT b."Id", r."Comment", r."Rating", r."Id"
@@ -160,9 +156,9 @@ WHERE b."Id" = @__id_0
 ORDER BY b."Id"
 ```
 
-#### Example #3
+#### Example #3 (Get by ID)
 
-Query
+Operations
 ```js
 query {
     book(id: "72d95bfd-1dac-4bc2-adc1-f28fd43777fd") {
@@ -170,7 +166,6 @@ query {
     }
 }
 ```
-
 Response
 ```json
 {
@@ -183,10 +178,199 @@ Response
   }
 }
 ```
-
 SQL generated code
 ``` sql
 SELECT b."Id"
 FROM "Books" AS b
 WHERE b."Id" = @__id_0
+```
+
+#### Example #4 (Get all)
+
+Operations
+```js
+query {
+    books {
+        id
+        title
+        publishedOn
+        reviews {
+            id
+            comment
+            rating
+        }
+    }
+}
+```
+Response
+```json
+{
+  "data": {
+    "books": [
+      {
+        "id": "72d95bfd-1dac-4bc2-adc1-f28fd43777fd",
+        "title": "Book 01",
+        "publishedOn": "2023-04-27T04:36:10.862Z",
+        "reviews": [
+          {
+            "id": "06162506-fca5-40a9-996e-9a93ca01a4f0",
+            "comment": "Comment 01_03",
+            "rating": 1
+          },
+          {
+            "id": "b1ab0fe9-5b0e-4b4a-8ea5-6c3007fde4cd",
+            "comment": "Comment 01_02",
+            "rating": 3
+          },
+          {
+            "id": "e66e7a9c-164d-44cf-8092-8a09eb39c62a",
+            "comment": "Comment 01_01",
+            "rating": 5
+          }
+        ]
+      },
+      {
+        "id": "7b6bf2e3-5d91-4e75-b62f-7357079acc51",
+        "title": "Book 03",
+        "publishedOn": "2023-04-27T04:36:10.862Z",
+        "reviews": [
+          {
+            "id": "3c9cebcf-ae63-4ae6-af62-fdea8d5e0302",
+            "comment": "Comment 03_01",
+            "rating": 3
+          }
+        ]
+      },
+      {
+        "id": "c32cc263-a7af-4fbd-99a0-aceb57c91f6b",
+        "title": "Book 02",
+        "publishedOn": "2023-04-27T04:36:10.862Z",
+        "reviews": [
+          {
+            "id": "0f4d70d5-e719-4f01-bde5-6d04fb0f7837",
+            "comment": "Comment 02_02",
+            "rating": 2
+          },
+          {
+            "id": "f5d55800-6518-40dd-b18d-e4522b54d32d",
+            "comment": "Comment 02_01",
+            "rating": 4
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+SQL generated code
+``` sql
+SELECT b."Id", b."Title", b."PublishedOn", r."Id", r."Comment", r."Rating"
+FROM "Books" AS b
+LEFT JOIN "Reviews" AS r ON b."Id" = r."BookId"
+ORDER BY b."Id"
+```
+
+### Mutations
+
+#### Example #1 (Create)
+
+Operations
+```js
+mutation ($item: BookForCreatingDtoInput!) {
+    createBook(item: $item) {
+        id
+    }
+}
+```
+Variables
+```json
+{
+  "item": {
+    "title": "My Book",
+    "publishedOn": "2022-09-28T00:00:00Z"
+  }
+}
+```
+Response
+```json
+{
+  "data": {
+    "createBook": {
+      "id": "7f7efa0a-3f38-4393-a807-f93253864749"
+    }
+  }
+}
+```
+SQL generated code
+``` sql
+INSERT INTO "Books" ("Id", "PublishedOn", "Title")
+VALUES (@p0, @p1, @p2);
+```
+
+#### Example #2 (Update)
+
+Operations
+```js
+mutation ($item: BookForUpdatingDtoInput!) {
+    updateBook(item: $item) {
+        id,
+            title,
+            publishedOn
+    }
+}
+```
+Variables
+```json
+{
+  "item": {
+    "id": "b60121ed-af91-4b78-9bd7-f8803e9c24dd",
+    "title": "My Book 2",
+    "publishedOn": "2023-10-28T00:00:00Z"
+  }
+}
+```
+Response
+```json
+{
+  "data": {
+    "updateBook": {
+      "id": "b60121ed-af91-4b78-9bd7-f8803e9c24dd",
+      "title": "My Book 2",
+      "publishedOn": "2023-10-28T00:00:00.000Z"
+    }
+  }
+}
+```
+SQL generated code
+``` sql
+UPDATE "Books" SET "PublishedOn" = @p0, "Title" = @p1
+WHERE "Id" = @p2;
+```
+
+#### Example #3 (Delete)
+
+Operations
+```js
+mutation ($id: UUID!) {
+    deleteBook(id: $id)
+}
+```
+Variables
+```json
+{
+  "id": "7f7efa0a-3f38-4393-a807-f93253864749"
+}
+```
+Response
+```json
+{
+  "data": {
+    "deleteBook": "Item with id '$7f7efa0a-3f38-4393-a807-f93253864749' was deleted!"
+  }
+}
+```
+SQL generated code
+``` sql
+DELETE FROM "Books"
+WHERE "Id" = @p0;
 ```

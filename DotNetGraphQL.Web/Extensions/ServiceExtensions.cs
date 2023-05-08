@@ -1,6 +1,7 @@
 using DotNetGraphQL.Web.Contracts;
 using Microsoft.EntityFrameworkCore;
 using DotNetGraphQL.Web.Data;
+using DotNetGraphQL.Web.GraphQL.Mutations;
 using DotNetGraphQL.Web.GraphQL.Queries;
 using DotNetGraphQL.Web.Services;
 
@@ -29,6 +30,7 @@ public static class ServiceExtensions
             .AddProjections()
             .AddFiltering()
             .AddSorting()
-            .AddQueryType<BookQuery>();
+            .AddQueryType<BookQuery>()
+            .AddMutationType<BookMutation>();
     }
 }
