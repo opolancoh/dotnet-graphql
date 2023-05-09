@@ -1,5 +1,4 @@
 using DotNetGraphQL.Web.Contracts;
-using DotNetGraphQL.Web.Data;
 using DotNetGraphQL.Web.Entities;
 
 namespace DotNetGraphQL.Web.GraphQL.Queries;
@@ -11,6 +10,8 @@ public class BookQuery
     [UseSorting]
     public IQueryable<Book?> GetBook([Service] IBookService service, Guid id) => service.GetById(id);
     
+    [UsePaging]
+    [UseOffsetPaging]
     [UseProjection]
     [UseFiltering]
     [UseSorting]

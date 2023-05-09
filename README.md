@@ -274,6 +274,55 @@ WHERE (@__p_0 = '') OR (strpos(b."Title", @__p_0) > 0)
 ORDER BY b."Title", b."Id"
 ```
 
+#### Example #4 (Get all - Projection - Filtering - Sorting)
+
+Operations
+```js
+query {
+    books(take: 2, skip: 2) {
+        totalCount
+        items {
+            id
+            title
+            publishedOn
+        }
+    }
+}
+```
+Response
+```json
+{
+  "data": {
+    "books": {
+      "totalCount": 4,
+      "items": [
+        {
+          "id": "7ca7e965-c542-4234-8a84-32f20b41b4ac",
+          "title": "New Book",
+          "publishedOn": "2022-01-18T05:00:00.000Z"
+        },
+        {
+          "id": "c32cc263-a7af-4fbd-99a0-aceb57c91f6b",
+          "title": "Book 02",
+          "publishedOn": "2023-06-16T05:00:00.000Z"
+        }
+      ]
+    }
+  }
+}
+```
+SQL generated code
+``` sql
+SELECT COUNT(*)::INT
+FROM "Books" AS b
+```
+``` sql
+Executed DbCommand (15ms) [Parameters=[@__p_1='3', @__p_0='2'], CommandType='Text', CommandTimeout='30']
+SELECT b."Id", b."Title", b."PublishedOn"
+FROM "Books" AS b
+LIMIT @__p_1 OFFSET @__p_0
+```
+
 ### Mutations
 
 #### Example #1 (Create)

@@ -4,6 +4,7 @@ using DotNetGraphQL.Web.Data;
 using DotNetGraphQL.Web.GraphQL.Mutations;
 using DotNetGraphQL.Web.GraphQL.Queries;
 using DotNetGraphQL.Web.Services;
+using HotChocolate.Types.Pagination;
 
 namespace DotNetGraphQL.Web.Extensions;
 
@@ -27,6 +28,10 @@ public static class ServiceExtensions
     {
         services
             .AddGraphQLServer()
+            .SetPagingOptions(new PagingOptions
+            {
+                MaxPageSize = 100, IncludeTotalCount = true
+            })
             .AddProjections()
             .AddFiltering()
             .AddSorting()
