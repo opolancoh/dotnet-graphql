@@ -48,7 +48,7 @@ To add initial data just uncomment this line in Program.cs:
 
 ### Queries
 
-#### Example #1 (Get by ID)
+#### Example #1 (Get by ID - Projection - All fields)
 
 Operations
 ```js
@@ -106,7 +106,7 @@ WHERE b."Id" = @__id_0
 ORDER BY b."Id"
 ```
 
-#### Example #2 (Get by ID)
+#### Example #2 (Get by ID - Projection - Some fields)
 
 Operations
 ```js
@@ -156,7 +156,7 @@ WHERE b."Id" = @__id_0
 ORDER BY b."Id"
 ```
 
-#### Example #3 (Get by ID)
+#### Example #3 (Get by ID - Projection - One field)
 
 Operations
 ```js
@@ -192,17 +192,17 @@ Operations
 query {
     books(
         order: [{ title: ASC }]
-    where: { or: [{ title: { contains: "0" } }] }
+        where: { or: [{ title: { contains: "0" } }] }
 ) {
+    id
+    title
+    publishedOn
+    reviews {
         id
-        title
-        publishedOn
-        reviews {
-            id
-            comment
-            rating
-        }
+        comment
+        rating
     }
+  }
 }
 ```
 Response
