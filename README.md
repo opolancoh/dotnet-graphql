@@ -274,7 +274,7 @@ WHERE (@__p_0 = '') OR (strpos(b."Title", @__p_0) > 0)
 ORDER BY b."Title", b."Id"
 ```
 
-#### Example #4 (Get all - Projection - Filtering - Sorting)
+#### Example #5 (Get all - Paging)
 
 Operations
 ```js
