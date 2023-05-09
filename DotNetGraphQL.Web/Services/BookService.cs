@@ -23,7 +23,7 @@ public class BookService : IBookService
 
     public IQueryable<Book?> GetById(Guid id)
     {
-        return _context.Books.Where(x => x.Id == id).AsQueryable();
+        return _context.Books.Where(x => x.Id == id);
     }
     
     public async Task<BookDto> Create(BookForCreatingDto item)

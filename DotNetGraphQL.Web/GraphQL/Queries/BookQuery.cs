@@ -10,7 +10,7 @@ public class BookQuery
     [UseFiltering]
     [UseSorting]
     public IQueryable<Book?> GetBook([Service] IBookService service, Guid id) => service.GetById(id);
-
+    
     [UseProjection]
     [UseFiltering]
     [UseSorting]

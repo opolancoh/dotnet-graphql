@@ -185,12 +185,15 @@ FROM "Books" AS b
 WHERE b."Id" = @__id_0
 ```
 
-#### Example #4 (Get all)
+#### Example #4 (Get all - Projection - Filtering - Sorting)
 
 Operations
 ```js
 query {
-    books {
+    books(
+        order: [{ title: ASC }]
+    where: { or: [{ title: { contains: "0" } }] }
+) {
         id
         title
         publishedOn
@@ -230,18 +233,6 @@ Response
         ]
       },
       {
-        "id": "7b6bf2e3-5d91-4e75-b62f-7357079acc51",
-        "title": "Book 03",
-        "publishedOn": "2023-04-27T04:36:10.862Z",
-        "reviews": [
-          {
-            "id": "3c9cebcf-ae63-4ae6-af62-fdea8d5e0302",
-            "comment": "Comment 03_01",
-            "rating": 3
-          }
-        ]
-      },
-      {
         "id": "c32cc263-a7af-4fbd-99a0-aceb57c91f6b",
         "title": "Book 02",
         "publishedOn": "2023-04-27T04:36:10.862Z",
@@ -257,6 +248,18 @@ Response
             "rating": 4
           }
         ]
+      },
+      {
+        "id": "7b6bf2e3-5d91-4e75-b62f-7357079acc51",
+        "title": "Book 03",
+        "publishedOn": "2023-04-27T04:36:10.862Z",
+        "reviews": [
+          {
+            "id": "3c9cebcf-ae63-4ae6-af62-fdea8d5e0302",
+            "comment": "Comment 03_01",
+            "rating": 3
+          }
+        ]
       }
     ]
   }
@@ -267,7 +270,8 @@ SQL generated code
 SELECT b."Id", b."Title", b."PublishedOn", r."Id", r."Comment", r."Rating"
 FROM "Books" AS b
 LEFT JOIN "Reviews" AS r ON b."Id" = r."BookId"
-ORDER BY b."Id"
+WHERE (@__p_0 = '') OR (strpos(b."Title", @__p_0) > 0)
+ORDER BY b."Title", b."Id"
 ```
 
 ### Mutations
